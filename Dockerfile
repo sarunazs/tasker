@@ -20,6 +20,7 @@ COPY requirements.txt requirements-dev.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt
 
 RUN useradd --create-home --shell /bin/bash --uid ${UID} app \
+    && mkdir -p /app/staticfiles /app/media \
     && chown -R app:app /app
 
 USER app
