@@ -3,7 +3,7 @@ stage: plan
 slug: bootstrap-django-docker-skeleton
 created: 2026-05-19
 source: ./IDEA-001-bootstrap-django-docker-skeleton.md
-status: ready
+status: shipped
 project: tasker
 ---
 
@@ -340,7 +340,7 @@ PR-level verification:
 
 ---
 
-**Status:** ready — architect reviewer pass complete (2026-05-19, verdict `REQUIRES REVISION`, all 10 concrete revisions applied; 3 new open questions Q6–Q8 added with defaults selected). Ready for `/work`.
+**Status:** shipped (2026-05-19) — `/work` executed all 6 commits + 1 runtime-discovered fix commit; verification passed (stack healthy, migrate clean, full + surgical pytest pass, smoke HTTP 200 with body match, admin 302, lint clean, UID bind-mount OK, postgres persists across teardown). Architect reviewer pass complete (verdict `REQUIRES REVISION`, all 10 concrete revisions applied; 3 new open questions Q6–Q8 added with defaults selected).
 
 ## Architect Review Log
 
