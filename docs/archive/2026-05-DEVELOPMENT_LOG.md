@@ -36,10 +36,11 @@ Chronological log of merged work (newest first). One entry per IDEA-bearing PR, 
 
 ### Runtime fixes landed in the same PR
 
-Two additional fix commits during `/work` verification:
+Three additional fix commits surfaced during browser verification:
 
 - **`fix(make): exclude split-settings overrides from pyflakes target`** — pyflakes false-positives on the deliberate `from .base import *` in `settings/dev.py` and `settings/prod.py` (Django split-settings convention; pyflakes can't introspect and doesn't honor `# noqa`). Excluded by name; `base.py` + `__init__.py` stay in scope.
 - **`fix(settings): set CSRF_TRUSTED_ORIGINS in dev so admin login works`** — Django 4.0+ rejects POSTs whose `Origin` isn't in `CSRF_TRUSTED_ORIGINS`. Out of the box, admin login returned 403 with `Origin checking failed`. Derived from `HTTP_PORT` env so the dev stack works on whatever port the host assigned.
+- **`fix(docker): pre-create staticfiles + media dirs with app-user ownership`** — `collectstatic` hit `PermissionError: '/app/staticfiles/admin'` because the named volumes mount onto paths that don't exist in the image, so they initialise root-owned. Fix: `mkdir -p /app/staticfiles /app/media` *before* the recursive chown, so Docker copies the correctly-owned image state into the empty named volume on first mount.
 
 ### Verification
 
