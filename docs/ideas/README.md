@@ -5,7 +5,7 @@ _Two locations per RULE_ideas-location-status: `docs/ideas/` = backlog;
 
 ## 🚧 In Progress
 
-- [IDEA-001](../archive/2026-05-idea-001-bootstrap-django-docker-skeleton/IDEA-001-bootstrap-django-docker-skeleton.md) ⏳ — Bootstrap Django + Docker Compose Skeleton
+_(none)_
 
 ## 💡 High Priority (backlog)
 
@@ -25,4 +25,7 @@ _(none)_
 
 ## ✅ References — Implemented
 
-_(none)_
+### IDEA-001: Bootstrap Django + Docker Compose Skeleton ✅ COMPLETE
+
+**Status**: ✅ **COMPLETE** · **Completed**: 2026-05-19 · **See**: [Archive](../archive/2026-05-idea-001-bootstrap-django-docker-skeleton/IDEA-001-bootstrap-django-docker-skeleton.md), [PR #1](https://github.com/sarunazs/tasker/pull/1).
+First IDEA of `tasker`. Landed Django 5.2.9 + Daphne (single ASGI server) + Postgres 16 + Redis 7 + nginx on Docker Compose, with `pip-tools` dep management, split settings (`base`/`dev`/`prod`), Makefile shortcuts (`up`/`down`/`shell`/`test ARGS=…`/`migrate`/`lint`/`pip-compile`), `.env.template`, pytest smoke harness, and README quickstart. Architect review surfaced (and the PR fixed) UID-mismatch on bind-mounted source, web healthcheck gating, dropped `wsgi.py` + `python-dotenv`, `SECURE_PROXY_SSL_HEADER` for prod, parameterised `HTTP_PORT`. Two runtime-discovered fixes also shipped: pyflakes scope (excludes the deliberate `from .base import *` in dev/prod settings) and `CSRF_TRUSTED_ORIGINS` in dev (so admin login works without a custom-port fight). Every later IDEA builds on this stack.
