@@ -5,11 +5,11 @@ _Two locations per RULE_ideas-location-status: `docs/ideas/` = backlog;
 
 ## 🚧 In Progress
 
-_(none)_
+- [IDEA-001](../archive/2026-05-idea-001-bootstrap-django-docker-skeleton/IDEA-001-bootstrap-django-docker-skeleton.md) ⏳ — Bootstrap Django + Docker Compose Skeleton
 
 ## 💡 High Priority (backlog)
 
-- [IDEA-001](IDEA-001-bootstrap-django-docker-skeleton.md) — Bootstrap Django + Docker Compose Skeleton
+_(none)_
 
 ## 💡 Medium Priority (backlog)
 
