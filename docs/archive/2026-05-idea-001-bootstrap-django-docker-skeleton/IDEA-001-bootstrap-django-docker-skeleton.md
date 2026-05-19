@@ -1,14 +1,14 @@
 ---
 id: 001
 title: Bootstrap Django + Docker Compose Skeleton
-status: idea
+status: complete
 priority: high
 supersedes: []
 superseded_by: null
 depends_on: []
 related: []
 created: 2026-05-19
-completed: null
+completed: 2026-05-19
 auto_safe: false
 auto_safe_reason: "Foundation IDEA — establishes the Django settings layout, Docker network topology, Daphne+nginx wiring, Makefile shape, and Postgres/Redis service contracts. Every later IDEA inherits these decisions, so a human must eyeball the scaffold before it solidifies."
 sensitive_paths_cleared: false
@@ -17,7 +17,7 @@ sensitive_paths_cleared_reason: "Touches infra by definition — Dockerfile, com
 
 # IDEA-001: Bootstrap Django + Docker Compose Skeleton
 
-**Status**: 💡 Idea
+**Status**: ✅ Complete (2026-05-19, PR #1)
 **Priority**: High
 
 **Problem** (or opportunity): The `tasker` repo is empty — zero commits, no source files. Before any feature IDEA can run, the project needs a working Django + Docker Compose stack that other IDEAs build on. This is the foundation commit.

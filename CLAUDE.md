@@ -10,15 +10,7 @@ The primary purpose of this repo is to serve as a **testbed for the mind-vault w
 
 ## Status
 
-Pre-scaffolding. No code yet. The first commits will lay down:
-
-- Django 5.2.9 project skeleton (LTS track)
-- Docker Compose stack: Django + Postgres + Redis (Celery later if/when needed)
-- Daphne as the single ASGI server (HTTP + WebSocket), not Gunicorn+Daphne split
-- nginx with `proxy_pass` in front, dev mirrors production
-- Makefile with the usual shortcuts (`up`, `down`, `shell`, `test`, `migrate`, `makemigrations`)
-- `docs/ideas/`, `docs/archive/` for mind-vault artefacts
-- `.env.template` (never a real `.env` in git)
+Bootstrapped — IDEA-001 shipped 2026-05-19 (PR #1). The repo has a runnable Django + Docker Compose stack, mind-vault workflow surface, and pytest smoke harness. Subsequent IDEAs build domain features (projects, tasks, users, etc.) on top of this foundation. See [`docs/archive/2026-05-DEVELOPMENT_LOG.md`](docs/archive/2026-05-DEVELOPMENT_LOG.md) for the chronological log and [`docs/ideas/README.md`](docs/ideas/README.md) for the rolling backlog + completed index.
 
 ## Stack (intended)
 
@@ -40,25 +32,35 @@ Pre-scaffolding. No code yet. The first commits will lay down:
 
 ## Commands
 
-To be filled in as the Makefile lands. The expected shape:
+Every target wraps `docker compose exec` — no host-level Python.
 
 ```
-make up         # docker compose up -d
-make down       # docker compose down
-make shell      # docker compose exec web bash
-make test       # docker compose exec -T web pytest
-make migrate    # docker compose exec web python manage.py migrate
+make up                    # bring stack up (-d)
+make down                  # tear down (volumes persist)
+make build                 # rebuild web image after Dockerfile/requirements changes
+make shell                 # bash in the web container
+make test                  # full pytest suite
+make test ARGS=path::node  # single test by pytest nodeid (use ARGS=, not path=)
+make migrate               # apply migrations
+make makemigrations        # generate migrations
+make logs svc=web          # follow logs for one service (svc= optional)
+make psql                  # interactive Postgres shell
+make redis-cli             # interactive Redis shell
+make lint                  # pyflakes over tasker + apps (excludes settings/dev.py + prod.py)
+make pip-compile           # regenerate requirements*.txt (runtime first, then dev)
 ```
 
-Run a single test (planned): `docker compose exec -T web pytest path/to/test_file.py::TestClass::test_name`.
+Stack runs on `HTTP_PORT` from `.env` (default 80; bootstrap verification used 8088 because :80 was taken). Bootstrap quickstart in [`README.md`](README.md).
 
-## What lives where (planned)
+## What lives where
 
-- `compose.yml` / `Dockerfile` — container definitions
-- `Makefile` — developer shortcuts
-- `tasker/` — Django project package (settings, urls, asgi)
-- `apps/` — domain apps (projects, tasks, users)
-- `docs/ideas/`, `docs/archive/` — mind-vault artefacts
-- `.env.template` — env var contract; real `.env` is gitignored and off-limits to Claude
+- `compose.yml` / `Dockerfile` / `nginx/default.conf` — container definitions; nginx fronts Daphne on `web:8000`.
+- `Makefile` — developer shortcuts (see Commands above).
+- `tasker/` — Django project package: `settings/{base,dev,prod}.py` (split; `__init__.py` empty by design so `DJANGO_SETTINGS_MODULE` is always explicit), `urls.py`, `views.py`, `asgi.py` (`ProtocolTypeRouter` with empty WS leg pre-wired).
+- `apps/` — domain apps live here (currently empty; `__init__.py` only). The settings `INSTALLED_APPS` adds `apps.<name>`-style entries when domain apps land.
+- `requirements*.in` / `requirements*.txt` — pip-tools managed; `.in` is the source of truth.
+- `docs/ideas/` — backlog (per `RULE_ideas-location-status`); `docs/archive/YYYY-MM-idea-NNN-<slug>/` — in-progress + completed IDEAs with their plans + per-month `YYYY-MM-DEVELOPMENT_LOG.md`.
+- `.env.template` — env contract; real `.env` is gitignored and off-limits to Claude.
+- `pytest.ini` + `conftest.py` — pytest-django wiring; `testpaths = tasker apps`.
 
-This file is a seed. Update it as real structure lands — keep it focused on non-obvious architecture, not file inventories.
+Keep this file focused on non-obvious architecture, not file inventories — extend it when a future IDEA introduces a non-obvious convention (e.g. multi-tenancy boundary, custom user model, channel routing topology).
