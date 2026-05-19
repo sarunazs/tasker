@@ -38,8 +38,15 @@ psql:
 redis-cli:
 	docker compose exec redis redis-cli
 
+# settings/dev.py and settings/prod.py legitimately use `from .base import *`
+# (the Django split-settings convention). Pyflakes can't introspect what base
+# exports and flags every override; it also doesn't honor # noqa directives.
+# Excluded by name; base.py + __init__.py stay in scope.
 lint:
-	docker compose exec -T web python -m pyflakes tasker apps
+	docker compose exec -T web sh -c 'find tasker apps -name "*.py" \
+		-not -path "tasker/settings/dev.py" \
+		-not -path "tasker/settings/prod.py" \
+		-print0 | xargs -0 python -m pyflakes'
 
 # Order matters: runtime first (generates requirements.txt), then dev
 # (which `-c`'s requirements.txt as a constraint).
