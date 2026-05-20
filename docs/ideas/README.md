@@ -9,7 +9,7 @@ _(none)_
 
 ## 💡 High Priority (backlog)
 
-_(none)_
+- [IDEA-002](IDEA-002-zero-touch-bootstrap.md) — Zero-touch bootstrap: migrate, collectstatic, dev superuser on first `make up`
 
 ## 💡 Medium Priority (backlog)
 
