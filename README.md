@@ -28,12 +28,12 @@ echo "UID=$(id -u)" >> .env
 make build
 make up
 
-# 3. Apply migrations and run the smoke test.
-make migrate
+# 3. Run the smoke test (migrations, statics and the dev superuser are
+#    auto-applied on web container start — see IDEA-002).
 make test
 ```
 
-Then open <http://localhost/> — you should see `tasker is alive`. The Django admin is at <http://localhost/admin/> (create a superuser via `make shell` → `python manage.py createsuperuser`).
+Then open <http://localhost/> — you should see `tasker is alive`. The Django admin is at <http://localhost/admin/>, logged in with the dev superuser provisioned from `.env` (`DJANGO_SUPERUSER_USERNAME` / `_PASSWORD`; defaults to `admin` / `admin`). The auto-bootstrap is hard-guarded on `tasker.settings.dev`; it never runs under prod settings.
 
 ## Common targets
 

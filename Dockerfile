@@ -19,6 +19,9 @@ WORKDIR /app
 COPY requirements.txt requirements-dev.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt -r requirements-dev.txt
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 RUN useradd --create-home --shell /bin/bash --uid ${UID} app \
     && mkdir -p /app/staticfiles /app/media \
     && chown -R app:app /app
@@ -27,4 +30,5 @@ USER app
 
 EXPOSE 8000
 
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["daphne", "-b", "0.0.0.0", "-p", "8000", "tasker.asgi:application"]
